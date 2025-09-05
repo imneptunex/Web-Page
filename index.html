@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gökçe Erdoğan - Junior Game Developer & Designer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='grad' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%2300f5ff;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%23ff6b6b;stop-opacity:1' /%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M20 20 L80 20 L80 50 L50 50 L50 80 L20 80 Z' fill='url(%23grad)'/%3E%3C/svg%3E">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #1a1a1a;
+            --bg-card: #222222;
+            --text-primary: #ffffff;
+            --text-secondary: #b3b3b3;
+            --accent-blue: #00f5ff;
+            --accent-purple: #8b5cf6;
+            --accent-gold: #ffd700;
+            --gradient: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 1000;
+            transition: var(--transition);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.5rem;
+            font-weight: 900;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--accent-blue);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient);
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+        .mobile-menu {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .mobile-menu span {
+            width: 25px;
+            height: 3px;
+            background: var(--text-primary);
+            margin: 3px 0;
+            transition: var(--transition);
+        }
+
+        /* Sections */
+        .section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 80px 0;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: var(--transition);
+        }
+
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section:not(#home) {
+            background: var(--bg-secondary);
+        }
+
+        /* Hero Section */
+        #home {
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(0, 245, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
+                var(--bg-primary);
+            position: relative;
+        }
+
+        .hero-content {
+            text-align: center;
+            z-index: 2;
+            position: relative;
+        }
+
+        .hero-title {
+            font-family: 'Orbitron', monospace;
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 900;
+            margin-bottom: 1rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 20px rgba(0, 245, 255, 0.5);
+            }
+            to {
+                text-shadow: 0 0 30px rgba(139, 92, 246, 0.8);
+            }
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        .hero-tagline {
+            font-size: 1.25rem;
+            max-width: 600px;
+            margin: 0 auto 3rem;
+            color: var(--text-primary);
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            background: var(--gradient);
+            color: var(--bg-primary);
+            text-decoration: none;
+            font-weight: 600;
+            border-radius: 50px;
+            transition: var(--transition);
+            box-shadow: 0 10px 30px rgba(0, 245, 255, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0, 245, 255, 0.5);
+        }
+
+        /* Content Sections */
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* About Section */
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .about-text p {
+            margin-bottom: 1.5rem;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .skill-item {
+            background: var(--bg-card);
+            padding: 1rem;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: var(--transition);
+        }
+
+        .skill-item:hover {
+            border-color: var(--accent-blue);
+            transform: translateY(-5px);
+        }
+
+        /* Resume Section */
+        .resume-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+        }
+
+        .resume-column h3 {
+            font-family: 'Orbitron', monospace;
+            color: var(--accent-blue);
+            margin-bottom: 2rem;
+            font-size: 1.5rem;
+        }
+
+        .resume-item {
+            background: var(--bg-card);
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            border-left: 4px solid var(--accent-blue);
+            transition: var(--transition);
+        }
+
+        .resume-item:hover {
+            transform: translateX(10px);
+        }
+
+        .resume-item h4 {
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            font-size: 1.25rem;
+        }
+
+        .resume-item .company {
+            color: var(--accent-purple);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .resume-item .date {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Projects Section */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .project-card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: var(--transition);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent-blue);
+            box-shadow: 0 20px 40px rgba(0, 245, 255, 0.2);
+        }
+
+        .project-image {
+            height: 200px;
+            background: var(--gradient);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--bg-primary);
+            font-size: 3rem;
+        }
+
+        .project-content {
+            padding: 2rem;
+        }
+
+        .project-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .project-description {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .project-tag {
+            background: rgba(0, 245, 255, 0.2);
+            color: var(--accent-blue);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+        }
+
+        .project-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .project-link {
+            color: var(--accent-blue);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .project-link:hover {
+            color: var(--accent-purple);
+        }
+
+        /* Contact Section */
+        .contact-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group label {
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 1rem;
+            color: var(--text-primary);
+            font-family: inherit;
+            transition: var(--transition);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .submit-btn {
+            background: var(--gradient);
+            color: var(--bg-primary);
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .contact-info h3 {
+            color: var(--accent-blue);
+            margin-bottom: 2rem;
+            font-size: 1.5rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            background: var(--bg-card);
+            border-radius: 50%;
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: var(--transition);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .social-link:hover {
+            background: var(--gradient);
+            color: var(--bg-primary);
+            transform: translateY(-3px);
+        }
+
+        /* Floating Elements */
+        .floating-element {
+            position: absolute;
+            pointer-events: none;
+            opacity: 0.1;
+        }
+
+        .floating-1 {
+            top: 20%;
+            left: 10%;
+            width: 100px;
+            height: 100px;
+            background: var(--accent-blue);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .floating-2 {
+            top: 60%;
+            right: 10%;
+            width: 80px;
+            height: 80px;
+            background: var(--accent-purple);
+            transform: rotate(45deg);
+            animation: float 4s ease-in-out infinite reverse;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .mobile-menu {
+                display: flex;
+            }
+            
+            .about-content,
+            .resume-content,
+            .contact-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                padding: 0 1rem;
+            }
+            
+            .section {
+                padding: 60px 0;
+            }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--gradient);
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">GE</div>
+            <ul class="nav-links">
+                <li><a href="#home" class="nav-link active">Home</a></li>
+                <li><a href="#about" class="nav-link">About</a></li>
+                <li><a href="#resume" class="nav-link">Resume</a></li>
+                <li><a href="#projects" class="nav-link">Projects</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+            </ul>
+            <div class="mobile-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Home Section -->
+    <section id="home" class="section visible">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title"> Gökçe Erdoğan </h1>
+                <p class="hero-subtitle">Junior Game Developer & Designer</p>
+                <p class="hero-tagline">Crafting immersive digital experiences through innovative game design and cutting-edge technology</p>
+                <a href="#projects" class="cta-button">
+                    View My Work
+                    <span>→</span>
+                </a>
+            </div>
+        </div>
+        <div class="floating-element floating-1"></div>
+        <div class="floating-element floating-2"></div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">About Me</h2>
+                <p class="section-subtitle">Passionate about creating unforgettable gaming experiences</p>
+            </div>
+            <div class="about-content">
+                <div class="about-text">
+                    <p>I'm a passionate game developer with over 5 years of experience in creating engaging and innovative games. My journey began with a love for storytelling and evolved into mastering the technical art of game development.</p>
+                    
+                    <p>Specializing in Unity and Unreal Engine, I've worked on various projects ranging from mobile puzzle games to immersive VR experiences. I believe in the power of games to connect people and create meaningful experiences.</p>
+
+                    <p>When I'm not coding, you'll find me exploring new game mechanics, studying player psychology or studying game design fundamentals</p>
+                </div>
+                <div class="skills-grid">
+                    <div class="skill-item">Unity 3D</div>
+                    <div class="skill-item">Unreal Engine</div>
+                    <div class="skill-item">C# / C++</div>
+                    <div class="skill-item">Game Design</div>
+                    <div class="skill-item">3D Modeling</div>
+                    <div class="skill-item">UI/UX Design</div>
+                    <div class="skill-item">VR/AR</div>
+                    <div class="skill-item">Multiplayer</div>
+                    <div class="skill-item">Microsoft Excel</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Resume Section -->
+    <section id="resume" class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Resume</h2>
+                <p class="section-subtitle">My professional journey and achievements</p>
+            </div>
+            <div class="resume-content">
+                <div class="resume-column">
+                    <h3>Experience</h3>
+                    <div class="resume-item">
+                        <h4>Unity 3D Developer</h4>
+                        <div class="company">Freelance</div>
+                        <div class="date">2023 - 2023</div>
+                        <p>Developed a mobile car controller in Unity modeled after Asphalt 8/9, implementing advanced mechanics such as drifting, nitro boost variations, airborne controls, and haptic feedback. Optimized the system for smooth mobile performance and inspector flexibility, enhancing both gameplay feel and ease of iteration. Delivered a polished, immersive racing experience that closely mirrors AAA standards.</p>
+                    </div>
+                    <div class="resume-item">
+                        <h4>Mobile Game Feature Researcher</h4>
+                        <div class="company">Freelance</div>
+                        <div class="date">2023 - 2023</div>
+                        <p>Researched and analyzed core gameplay mechanics from popular arcade racing titles such as Asphalt 8/9 to identify key features that enhance player engagement. Documented mechanics including car handling, nitro boost variations, drift systems, airborne controls, and UI elements, providing a structured reference for implementation in Unity. Delivered actionable insights that guided development of realistic, immersive racing game features optimized for mobile platforms.
+</p>
+                    </div>
+                    <div class="resume-item">
+                        <h4>Audience Analyst</h4>
+                        <div class="company">Freelance</div>
+                        <div class="date">2023 - 2023</div>
+                        <p>Conducted audience analysis using Excel to organize, clean, and visualize large datasets, identifying trends in user behavior and engagement. Generated actionable insights that supported data-driven decisions for content strategy and product improvements.
+</p>
+                    </div>
+                </div>
+                <div class="resume-column">
+                    <h3>Education & Certifications</h3>
+                    <div class="resume-item">
+                        <h4>Game Development & Design</h4>
+                        <div class="company">Epic Games</div>
+                        <div class="date">2025 - 2025</div>
+                        <p>Specialized in Game Development and design.</p>
+                    </div>
+                    <div class="resume-item">
+                        <h4>CS50 Game Development</h4>
+                        <div class="company">Harvard University</div>
+                        <div class="date">2021</div>
+                        <p>Completed a comprehensive course on game development principles, focusing on 2D and 3D game design, programming, and project management.</p>
+                    </div>
+                    <div class="resume-item">
+                        <h4>Unreal Engine Certification</h4>
+                        <div class="company">Epic Games</div>
+                        <div class="date">2022</div>
+                        <p>Professional certification in Unreal Engine development.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+<section id="projects" class="section">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Featured Projects</h2>
+            <p class="section-subtitle">A showcase of my best work and creative solutions</p>
+        </div>
+        <div class="projects-grid">
+            <!-- Watt-a-Kitchen -->
+            <div class="project-card">
+                <div class="project-image">🧑🏻‍🍳</div>
+                <div class="project-content">
+                    <h3 class="project-title">Watt-a-Kitchen!</h3>
+                    <p class="project-description">Developed a 3D, Overcooked-inspired game for a game jam, showcasing strong design and technical execution within a limited timeframe. Implemented multiple gameplay features utilizing scriptable objects for scalability and custom shaders to enhance visual fidelity.</p>
+                    <div class="project-tags">
+                        <span class="project-tag">Unity</span>
+                        <span class="project-tag">3D</span>
+                        <span class="project-tag">C#</span>
+                        <span class="project-tag">Role Playing</span>
+                    </div>
+                    <div class="project-links">
+                       <a href="https://imneptune.itch.io/watt-a-kitchen" class="project-link" target="_blank" rel="noopener noreferrer">Live Demo</a>
+                        <a href="https://github.com/imneptunex/GameJamPowerKenney" class="project-link" target="_blank" rel="noopener noreferrer">Source Code</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Opps I Cooked It Again -->
+            <div class="project-card">
+                <div class="project-image">🧪</div>
+                <div class="project-content">
+                    <h3 class="project-title">Opps I Cooked It Again</h3>
+                    <p class="project-description">Developed Opps I Cooked It Again, a loop-based experimental puzzle game where players attempt to discover the perfect chemical mix. Designed a reset mechanic in which failed combinations or character death restart the cycle, encouraging strategic experimentation and mastery through repetition. Combined engaging trial-and-error gameplay with immersive systems to create tension, replayability, and player-driven discovery.</p>
+                    <div class="project-tags">
+                        <span class="project-tag">Unity</span>
+                        <span class="project-tag">Puzzle</span>
+                        <span class="project-tag">3D</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="https://imneptune.itch.io/opps-i-cooked-it-again" class="project-link" target="_blank" rel="noopener noreferrer">Live Demo</a>
+                        <a href="https://github.com/vjrnak/DrugLab" class="project-link" target="_blank" rel="noopener noreferrer">Source Code</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Obscruia -->
+            <div class="project-card">
+                <div class="project-image">⚔️</div>
+                <div class="project-content">
+                    <h3 class="project-title">Obscruia</h3>
+                    <p class="project-description">Developed a roguelike, Hades-inspired pizza delivery game, combining fast-paced action with procedural level design. Implemented challenging enemy encounters, dynamic progression systems, and engaging delivery mechanics to create a tense and replayable experience. Focused on balancing difficulty, pacing, and player feedback to deliver an immersive, action-driven gameplay loop.</p>
+                    <div class="project-tags">
+                        <span class="project-tag">Unity</span>
+                        <span class="project-tag">3D</span>
+                        <span class="project-tag">Horror</span>
+                        <span class="project-tag">Action</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="https://github.com/imneptunex/pizzaDeliveryy" class="project-link" target="_blank" rel="noopener noreferrer">Source Code</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PathCoder -->
+            <div class="project-card">
+                <div class="project-image">↗️</div>
+                <div class="project-content">
+                    <h3 class="project-title">PathCoder</h3>
+                    <p class="project-description">Developed a logic-based puzzle game where players programmatically guide an arrow to its endpoint by assigning functions and commands. Designed intuitive gameplay mechanics that encourage problem-solving, sequential thinking, and experimentation, while providing a scalable system for adding increasingly complex levels.</p>
+                    <div class="project-tags">
+                        <span class="project-tag">Unity</span>
+                        <span class="project-tag">2D</span>
+                        <span class="project-tag">Puzzle</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="https://github.com/imneptunex/ArrowPuzzleGame" class="project-link" target="_blank" rel="noopener noreferrer">Source Code</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tamagotchi Dog -->
+            <div class="project-card">
+                <div class="project-image">🐶</div>
+                <div class="project-content">
+                    <h3 class="project-title">Tamagotchi</h3>
+                    <p class="project-description">Developed a virtual pet game inspired by Tamagotchi, allowing players to raise, care for, and interact with a digital dog. Implemented systems for feeding, playing, health management, and growth progression, creating an engaging and interactive experience that encourages consistent player attention and nurturing.</p>
+                    <div class="project-tags">
+                        <span class="project-tag">Unity</span>
+                        <span class="project-tag">Mobile</span>
+                        <span class="project-tag">2D</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="https://github.com/imneptunex/Tamagotchi_Game" class="project-link" target="_blank" rel="noopener noreferrer">Source Code</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Get In Touch</h2>
+                <p class="section-subtitle">Let's collaborate on something amazing</p>
+            </div>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <h3>Contact Information</h3>
+                    <div class="contact-item">
+                        <span>📧</span>
+                        <span>gokkceerdogann@gmail.com</span>
+                    </div>
+                    <div class="contact-item">
+                        <span>📱</span>
+                        <span>+90 505 972 3844</span>
+                    </div>
+                    <div class="contact-item">
+                        <span>📍</span>
+                        <span>Istanbul, Turkey</span>
+                    </div>
+                    <div class="social-links">
+                        <a href="#" class="social-link">🐦</a>
+                        <a href="#" class="social-link">💼</a>
+                        <a href="#" class="social-link">🐙</a>
+                        <a href="#" class="social-link">🎥</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetSection = document.querySelector(targetId);
+                
+                targetSection.scrollIntoView({
+                    behavior: 'smooth'
+                });
+                
+                // Update active nav link
+                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Intersection Observer for section animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    
+                    // Update active nav link based on visible section
+                    const sectionId = entry.target.getAttribute('id');
+                    document.querySelectorAll('.nav-link').forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href') === `#${sectionId}`) {
+                            link.classList.add('active');
+                        }
+                    });
+                }
+            });
+        }, observerOptions);
+
+        // Observe all sections
+        document.querySelectorAll('.section').forEach(section => {
+            observer.observe(section);
+        });
+
+        // Form submission
+        document.querySelector('.contact-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form data
+            const formData = new FormData(this);
+            const name = formData.get('name');
+            const email = formData.get('email');
+            const subject = formData.get('subject');
+            const message = formData.get('message');
+            
+        });
+    </script>
+</body>
+</html> 
